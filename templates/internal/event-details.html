@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=divice-width, initial=1.0"/>
+	<title>Insert title here</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script><!-- jQuery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.2.0/js/mdb.min.js"></script><!-- MDB -->
+	<script src="js/bootstrap-markdown.js"></script><!-- テキストボックス -->
+	<script src="../../static/js/common.js" th:src="@{/js/common.js}"></script><!-- 共通 -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.2.0/css/mdb.min.css" rel="stylesheet"></link><!-- MDB -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"></link><!-- Bootstrap -->
+	<link href="css/bootstrap-markdown.min.css" rel="stylesheet"></link><!-- テキストボックス -->
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"></link><!-- Webフォント -->
+<script>
+	$.material.init();
+</script>
+<script>
+function attend(x) {
+	var form = document.createElement('form');
+	form.action = "/event/attendance/" + x.className;
+	form.method = 'get';
+	document.body.appendChild(form);
+	form.submit();
+}
+</script>
+</head>
+<body background="img/background.jpg">
+<!-- ヘッダー　デザイン検討 -->
+<div class="navbar navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="nabar-header">
+			<div class="row">
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="moveTop();"><i class="fa fa-lock  fa-2x" aria-hidden="true"></i>  トップ</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="moveMember()"><i class="fa fa-users fa-2x" aria-hidden="true"></i>  メンバー</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="moveMypage()"><i class="fa fa-id-card-o  fa-2x" aria-hidden="true"></i>  マイページ</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  イベント</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  予備</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  ログアウト</button></div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 表示用ダミー -->
+<div class="navbar">
+	<div class="container-fluid">
+		<div class="nabar-header">
+			<div class="row">
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="moveTop();"><i class="fa fa-lock  fa-2x" aria-hidden="true"></i>  トップ</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="moveMember()"><i class="fa fa-users fa-2x" aria-hidden="true"></i>  メンバー</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="moveMypage()"><i class="fa fa-id-card-o  fa-2x" aria-hidden="true"></i>  マイページ</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  イベント</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  予備</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-raised btn-primary btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  ログアウト</button></div>
+			</div>
+		</div>
+	</div>
+</div>
+<form method="post" action="/event">
+	<div class="container" style="padding:20px 0" >
+		<div class="panel panel-success">
+			<div class="panel-heading">
+
+			</div>
+			<div class="panel-body">
+				<h3>イベント詳細</h3>
+				<p th:text="${event.eventName}"></p>
+				<p th:text="${event.eventDetails}"></p>
+			</div>
+		</div>
+		<input type="button" value="参加する" th:class="${event.id}" onclick="attend(this);"/><!-- イベントIDを送る -->
+	</div>
+</form>
+</body>
+</html>

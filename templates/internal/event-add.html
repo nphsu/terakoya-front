@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=divice-width, initial=1.0"/>
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script><!-- jQuery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.2.0/js/mdb.min.js"></script><!-- MDB -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><!-- Bootstrap -->
+	<script src="js/bootstrap-markdown.js"></script><!-- テキストボックス -->
+	<script src="../../static/js/common.js" th:src="@{/js/common.js}"></script><!-- 共通 -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.2.0/css/mdb.min.css" rel="stylesheet"></link><!-- MDB -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"></link><!-- Bootstrap -->
+	<link href="css/bootstrap-markdown.min.css" rel="stylesheet"></link><!-- テキストボックス -->
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"></link><!-- Webフォント -->
+<style>
+body {
+	padding-top: 70px;
+}
+</style>
+<script>
+	$.material.init();
+</script>
+</head>
+<body>
+<!-- ヘッダー　デザイン検討 -->
+<div class="navbar navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="nabar-header">
+			<div class="row">
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="moveTop();"><i class="fa fa-lock  fa-2x" aria-hidden="true"></i>  トップ</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="moveMember()"><i class="fa fa-users fa-2x" aria-hidden="true"></i>  メンバー</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="moveMypage()"><i class="fa fa-id-card-o  fa-2x" aria-hidden="true"></i>  マイページ</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  イベント</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  予備</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  ログアウト</button></div>
+			</div>
+		</div>
+	</div>
+</div>
+<form method="post" action="/event" th:object="${eventForm}">
+	<div class="form-group label-floating">
+		<label class="control-label" for="eventName">イベントのタイトルを入力してください</label>
+		<input class="form-control" name="eventName" th:field="*{eventName}" type="text"/>
+	</div>
+	<div class="form-group label-floating">
+		<label class="control-label" for="eventDatetime">イベントの開始日時を入力してください</label>
+		<input class="form-control" name="eventDatetime" th:field="*{eventStartDatetime}" type="text"/>
+	</div>
+	<div class="form-group label-floating">
+		<label class="control-label" for="eventDatetime">イベントの終了日時を入力してください</label>
+		<input class="form-control" name="eventDatetime" th:field="*{eventEndDatetime}" type="text"/>
+	</div>
+	<div class="form-group label-floating">
+		<label class="control-label" for="place">イベントの開催場所を入力してください</label>
+		<input class="form-control" name="place" th:field="*{place}" type="text"/>
+	</div>
+	<div class="form-group">
+		<label for="eventDetails">イベント詳細事項を入力できます</label>
+		<textarea class="form-control" rows="5" name="eventDetails"></textarea>
+	</div>
+	<input type="submit" class="btn btn-outline-default btn-rounded waves-effect" value="登録する" name="register"/>
+</form>
+</body>
+</html>

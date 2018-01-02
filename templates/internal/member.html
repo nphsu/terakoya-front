@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=divice-width, initial=1.0"/>
+	<title>Insert title here</title>
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css"></link>
+	<!-- Bootstrap core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet"></link>
+	<!-- Material Design Bootstrap -->
+	<link href="css/mdb.min.css" rel="stylesheet"></link>
+	<!-- Your custom styles (optional) -->
+	<link href="css/style.css" rel="stylesheet"></link>
+<style>
+body {
+	padding-top: 70px;
+}
+</style>
+<script>
+	$.material.init();
+</script>
+</head>
+<body>
+<!--/.Navbar green color-->
+<nav class="navbar navbar-fixed-top scrolling-navbar navbar-dark green">
+	<!-- Collapse button-->
+	<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#collapseEx2">
+		<i class="fa fa-bars"></i>
+	</button>
+	<div class="container">
+		<!--Collapse content-->
+		 <div class="collapse navbar-toggleable-xs" id="collapseEx2">
+
+			<ul class="nav navbar-nav smooth-scroll">
+				<li class="nav-item"><!-- <li class="nav-item active"> -->
+					<a class="nav-link" href="#" onclick="moveTop();"><i class="fa fa-lock" aria-hidden="true"></i><span>トップ</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" onclick="moveMember()"><i class="fa fa-users" aria-hidden="true"></i><span>メンバー</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" onclick="moveMypage()"><i class="fa fa-sign-out" aria-hidden="true"></i><span>マイページ</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" onclick="logout()"><i class="fa fa-sign-out" aria-hidden="true"></i><span> ログアウト</span></a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<!-- 検索フォーム -->
+<form method="post" action="/member"  th:object="${memberSearchForm}">
+<div>
+	<input type="text" class="form-control" th:field="*{searchWord}"/><button class="btn btn-outline-default btn-rounded waves-effect"><i class="fa fa-search" aria-hidden="true"></i>検索する</button>
+</div>
+</form>
+<!--Section: Team v.4-->
+<section class="section">
+
+    <!--Section heading-->
+    <h1 class="section-heading">Our amazing team</h1>
+    <!--Section sescription-->
+    <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit, error amet numquam iure provident voluptate esse quasi, veritatis totam voluptas nostrum quisquam eum porro a pariatur accusamus veniam.</p>
+    <br/>
+
+    <div class="row">
+	<div th:each="user, row : ${member}" th:object="${user}">
+        <!--First column-->
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+
+            <!--Rotating card-->
+            <div class="card-wrapper">
+                <div th:id="'card' + ${user.id}" class="card-rotating effect__click">
+
+                    <!--Front Side-->
+                    <div class="face front">
+
+                        <!-- Image-->
+                        <div class="card-up">
+                            <img src="http://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(55).jpg" th:src="*{userImage.backImage}"/>
+                        </div>
+                        <!--Avatar-->
+                        <div class="avatar"><img th:src="*{userImage.profileImage}" class="rounded-circle img-responsive"/>
+                        </div>
+                        <!--Content-->
+                        <div class="card-block">
+                            <h4><span th:text="*{nickName}"></span></h4>
+                            (<span th:text="*{fullName}"></span>)
+                            <p><span th:text="*{userInfo.job}"></span></p>
+                            <!--Triggering button-->
+                            <a class="rotate-btn" data-card="card" th:attr="data-card='card' + ${user.id}"><i class="fa fa-repeat"></i> Click here to rotate</a>
+                        </div>
+                    </div>
+                    <!--/.Front Side-->
+
+                    <!--Back Side-->
+                    <div class="face back">
+
+                        <!--Content-->
+                        <h4>About me</h4>
+                        <hr/>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime quae, dolores dicta. Blanditiis rem amet repellat, dolores nihil quae in mollitia asperiores ut rerum repellendus, voluptatum eum, officia laudantium quaerat?</p>
+                        <hr/>
+                        <!--Social Icons-->
+                        <ul class="inline-ul">
+                            <li><a class="icons-sm fb-ic"><i class="fa fa-facebook"></i></a></li>
+                            <li><a class="icons-sm pin-ic"><i class="fa fa-pinterest"> </i></a></li>
+                            <li><a class="icons-sm ins-ic"><i class="fa fa-instagram"> </i></a></li>
+                            <li><a class="icons-sm tw-ic"><i class="fa fa-twitter"> </i></a></li>
+                        </ul>
+                        <!--Triggering button-->
+                        <a class="rotate-btn" data-card="card" th:attr="data-card='card' + ${user.id}"><i class="fa fa-undo"></i> Click here to rotate back</a>
+
+                    </div>
+                    <!--/.Back Side-->
+
+                </div>
+            </div>
+            <!--/.Rotating card-->
+        </div>
+        <!--/First column-->
+	</div>
+    </div>
+
+</section>
+<!--/Section: Team v.4-->
+<!-- メンバー一覧　TODO絞り込み、ページング-->
+<div class="container" style="padding:20px 0" >
+	<div class="row">
+		<div th:each="user, row : ${member}" th:object="${user}">
+			<div class="col-md-3 col-sm-4 col-xs-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-sm-3 col-xs-3">
+								<img th:src="*{userImage.profileImage}"/>
+							</div>
+							<div class="col-sm-9 col-xs-9">
+								<button class="btn btn-light-green btn-lg btn-block" th:onclick="'moveUserDetails(\'' + ${user.id} + '\');'">
+									<span th:text="*{nickName}"></span><br/>
+									(<span th:text="*{fullName}"></span>)
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<span th:text="*{terakoya.termNo}"></span><span>  期生</span><br/>
+						<span>Birth:  </span><span th:text="*{userInfo.birthday}"></span><br/>
+						<span>I can:  </span><span th:text="*{userInfo.job}"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<input type="submit" value="イベントを追加する" class="btn btn-outline-default btn-rounded waves-effect" name="add"/>
+	<!-- JQuery -->
+    <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+	<!-- Bootstrap tooltips -->
+	<script type="text/javascript" src="js/tether.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!-- Common -->
+    <script type="text/javascript" src="js/common.js"></script>
+</body>
+</html>

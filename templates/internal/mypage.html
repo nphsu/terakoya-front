@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=divice-width, initial=1.0"/>
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.2.0/js/mdb.min.js"></script><!-- MDB -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><!-- Bootstrap -->
+	<script src="js/bootstrap-markdown.js"></script><!-- テキストボックス -->
+	<script src="../../static/js/common.js" th:src="@{/js/common.js}"></script><!-- 共通 -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.2.0/css/mdb.min.css" rel="stylesheet"></link><!-- MDB -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"></link><!-- Bootstrap -->
+	<link href="css/bootstrap-markdown.min.css" rel="stylesheet"></link><!-- テキストボックス -->
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"></link><!-- Webフォント -->
+<style>
+body {
+	padding-top: 70px;
+}
+span {
+  font-family: 'Noto Sans Japanese', 'Meiryo', Arial, sans-serif;;
+  font-weight: 700;
+}
+</style>
+<script>
+	$.material.init();
+</script>
+<script>
+function statusChangeCallback(response) {
+  console.log('statusChangeCallback');
+  console.log(response);
+  // The response object is returned with a status field that lets the
+  // app know the current login status of the person.
+  // Full docs on the response object can be found in the documentation
+  // for FB.getLoginStatus().
+  if (response.status === 'connected') {
+    // Logged into your app and Facebook.
+    testAPI(response.authResponse.userID);
+  } else if (response.status === 'not_authorized') {
+    // The person is logged into Facebook, but not your app.
+    document.getElementById('status').innerHTML = 'Please log ' +
+      'into this app.';
+  } else {
+    // The person is not logged into Facebook, so we're not sure if
+    // they are logged into this app or not.
+    document.getElementById('status').innerHTML = 'Please log ' +
+      'into Facebook.';
+  }
+}
+
+//This function is called when someone finishes with the Login
+// Button.  See the onlogin handler attached to it in the sample
+// code below.
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
+
+//Here we run a very simple test of the Graph API after login is
+// successful.  See statusChangeCallback() for when this call is made.
+function testAPI(userID) {
+	var json = new Object();
+	console.log('Welcome!  Fetching your information.... ' + userID);
+	FB.api('/me', {locale: 'ja_JP', fields: 'name, email, gender, birthday'}, function(response) {
+		document.getElementById('status').innerHTML =
+		'Thanks for logging in, ' + response.name + '!';
+		json.email = response.email;
+		json.gender = response.gender;
+		json.birthday = response.birthday;
+		json.fullName = response.name;
+
+		FB.api("/" + userID + "/picture", function (response) {
+			document.getElementById('status').innerHTML = response.data.url;
+			$("#profile").children("img").attr({'src':response.data.url});
+			json.profileImage = response.data.url;
+
+			$.ajax({
+				url: "http://localhost:5000/facebookInfo",
+				type : 'POST',
+				dataType : 'json',
+				data : {
+					"facebookInfo" : JSON.stringify(json),
+				},
+				timeout : 1000,
+				success: function (data) {
+					console.log("success: " + data);
+					var form = document.createElement('form');
+					form.action = "/login/" + data;
+					form.method = 'get';
+					document.body.appendChild(form);
+					form.submit();
+				},
+				error : function(data) {
+					console.log("error: " + data);
+				}
+			});
+		});
+	});
+}
+
+window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '703763739791620',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+};
+
+(function(d, s, id){
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/en_US/sdk.js";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));
+</script>
+</head>
+<body>
+<!-- ヘッダー　デザイン検討 -->
+<div class="navbar navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="nabar-header">
+			<div class="row">
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="moveTop();"><i class="fa fa-lock  fa-2x" aria-hidden="true"></i>  トップ</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="moveMember()"><i class="fa fa-users fa-2x" aria-hidden="true"></i>  メンバー</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="moveMypage()"><i class="fa fa-id-card-o  fa-2x" aria-hidden="true"></i>  マイページ</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  イベント</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  予備</button></div>
+				<div class="col-sm-2 col-xs-4"><button class="btn btn-outline-default btn-rounded waves-effect btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  ログアウト</button></div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- ユーザ情報変更 -->
+<form method="post" action="/mypage" th:object="${myInfoForm}">
+<div class="container" style="padding:20px 0" >
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<span>プロフィール編集</span>
+		</div>
+		<div class="panel-body">
+
+			<!-- ユーザ情報変更 -->
+			<button type="button" class="btn btn-outline-default btn-rounded waves-effect" data-toggle="modal" data-target="#userModal"><i class="fa fa-caret-right fa-3x" aria-hidden="true"></i>  <span>ユーザ情報を変更する</span></button>
+			<!-- Modal -->
+			<div class="modal fade" id="userModal" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">変更する情報を入力してください</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<span>ニックネーム：</span><input type="text" class="form-control" th:field="${myInfoForm.nickName}" th:value="${user.nickName}"/>
+							</div>
+							<div class="form-group">
+								<!-- Facebook情報取り込み -->
+								<span>Facebook情報を読み込む：</span><fb:login-button scope="public_profile,email,user_birthday" onlogin="checkLoginState();"></fb:login-button>
+								<div id="profile"><img/></div>
+							</div>
+							<button type="submit" class="btn btn-primary" name="user">変更</button>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- パスワード情報変更 -->
+			<button type="button" class="btn btn-outline-default btn-rounded waves-effect" data-toggle="modal" data-target="#passwordModal"><i class="fa fa-caret-right fa-3x" aria-hidden="true"></i>  <span>パスワードを変更する</span></button>
+			<!-- Modal -->
+			<div class="modal fade" id="passwordModal" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">新しいパスワードを入力してください</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<input type="text" class="form-control" th:field="${myInfoForm.password}"/>
+							</div>
+							<button type="submit" class="btn btn-primary" name="password">変更</button>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+<!-- ユーザヒストリーの追加 -->
+<form method="post" action="/mypage" th:object="${userHistoryForm}">
+<div class="container" style="padding:20px 0" >
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<span>ヒストリーの編集</span>
+		</div>
+		<div class="panel-body">
+			<!-- ヒストリー追加 -->
+			<div th:each="history, row : ${histories}" th:object="${history}">
+				<ul class="list-group">
+					<li class="list-group-item list-group-item-success"><span th:text="*{historyYearMonth}"></span>  <span th:text="*{historyTitle}"></span></li>
+				</ul>
+				<!-- <button type="button" class="btn btn-outline-default btn-rounded waves-effect btn-block"><span th:text="*{historyYearMonth}"></span>  <span th:text="*{historyTitle}"></span></button> -->
+			</div>
+			<button type="button" class="btn btn-outline-default btn-rounded waves-effect" data-toggle="modal" data-target="#history"><i class="fa fa-caret-right fa-3x" aria-hidden="true"></i>  <span>ヒストリーを追加する</span></button>
+			<!-- Modal ヒストリーの追加ボタン-->
+			<div class="modal fade" id="history" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">あなたのヒストリーの追加します。</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<h3>ヒストリーの追加</h3>
+								<span>年：</span><input type="text" class="form-control" th:field="*{historyYear}"/>
+								<span>月：</span><input type="text" class="form-control" th:field="*{historyMonth}"/>
+								<span>タイトル：</span><input type="text" class="form-control" th:field="*{historyTitle}"/>
+								<span>詳細コメント：</span><input type="text" class="form-control" th:field="*{historyDetail}"/>
+							</div>
+							<button type="submit" class="btn btn-primary" name="history">ヒストリーを追加</button>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+<!-- ここにヒストリーリストが入る -->
+<div class="container" style="padding:20px 0" >
+	<div th:each="history, row : ${histories}" th:object="${history}">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+			</div>
+			<div class="panel-body">
+				<span th:text="*{historyYearMonth}"></span>
+				<span th:text="*{historyTitle}"></span>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

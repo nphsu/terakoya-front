@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Insert title here</title>
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css"></link>
+	<!-- Bootstrap core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet"></link>
+	<!-- Material Design Bootstrap -->
+	<link href="css/mdb.min.css" rel="stylesheet"></link>
+	<!-- Your custom styles (optional) -->
+	<link href="css/style.css" rel="stylesheet"></link>
+<style>
+body {
+	padding-top: 70px;
+}
+</style>
+<script>
+	$.material.init();
+</script>
+</head>
+<body>
+<!--
+	<h1>Login page</h1>
+
+	<form th:action="@{/login}" method="post">
+		<label for="loginId">LoginID</label>:
+		<input type="text" id="loginId" name="loginId" autofocus="autofocus" /> <br />
+		<label for="password">Password</label>:
+		<input type="password" id="password" name="password" /> <br />
+		<input type="submit" value="Log in" />
+	</form>
+ -->
+<!--Naked Form-->
+<div class="card-block">
+<form th:action="@{/login}" method="post">
+    <!--Header-->
+    <div class="text-xs-center">
+        <h3><i class="fa fa-lock"></i> Login:</h3>
+        <hr class="mt-2 mb-2"/>
+    </div>
+
+    <!--Body-->
+    <div class="md-form">
+        <i class="fa fa-envelope prefix"></i>
+        <input type="text" id="loginId" name="loginId" class="form-control"/>
+        <label for="loginId">Your loginID</label>
+    </div>
+
+    <div class="md-form">
+        <i class="fa fa-lock prefix"></i>
+        <input type="password" id="password" name="password" class="form-control"/>
+        <label for="password">Your password</label>
+    </div>
+
+    <div class="text-xs-center">
+        <button type="submit" class="btn btn-deep-purple">Login</button>
+    </div>
+	<p th:if="${loginError}" class="error">Wrong user or password</p>
+</form>
+</div>
+<!--Footer-->
+<div class="modal-footer">
+    <div class="options">
+        <p>Not a member? <a href="#">Sign Up</a></p>
+        <p>Forgot <a href="#">Password?</a></p>
+    </div>
+</div>
+<!--Naked Form-->
+
+	<!-- JQuery -->
+    <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+	<!-- Bootstrap tooltips -->
+	<script type="text/javascript" src="js/tether.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!-- Common -->
+    <script type="text/javascript" src="js/common.js"></script>
+</body>
+</html>

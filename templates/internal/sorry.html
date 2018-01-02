@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=divice-width, initial=1.0"/>
+	<title>Insert title here</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script><!-- なぜかjs以下が読み込めない -->
+	<script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="../../static/js/material.min.js" th:src="@{/js/material.min.js}"></script><!-- マテリアルデザイン -->
+	<script src="../../static/js/ripples.min.js" th:src="@{/js/ripples.min.js}"></script><!-- マテリアルデザイン -->
+	<script src="../../static/js/bootstrap-markdown.js" th:src="@{/js/bootstrap-markdown.js}"></script><!-- マテリアルデザイン -->
+	<script src="../../static/js/common.js" th:src="@{/js/common.js}"></script><!-- 共通 -->
+	<link href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"></link>
+	<link href="../../static/css/bootstrap-material-design.min.css" th:href="@{/css/bootstrap-material-design.min.css}" rel="stylesheet"></link><!-- マテリアルデザイン -->
+	<link href="../../static/css/ripples.min.css" th:href="@{/css/ripples.min.css}" rel="stylesheet"></link><!-- マテリアルデザイン -->
+	<link href="../../static/css/bootstrap-markdown.min.css" th:href="@{/css/bootstrap-markdown.min.css}" rel="stylesheet"></link><!-- マテリアルデザイン -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link><!-- Webフォント -->
+	<link rel="stylesheet" href="http://fonts.googleapis.com/earlyaccess/notosansjp.css"></link>
+<style>
+img {
+	max-width : 100%;
+	height : auto;
+}
+
+body {
+	-webkit-text-size-adjust : 100%;
+}
+
+@media screen and (max-width : 480px) {
+h2 {
+	font-size : 75%;
+	margin : 1em 0 0.8em 0;
+}
+p {
+	width : 100%;
+	font-size : 65%;
+	margin : 0 0 1.8em 0;
+	line-height : 1.7;
+}
+}
+
+#editor {overflow:scroll; max-height:300px}
+</style>
+<script>
+	$.material.init();
+</script>
+<!-- スムーズスクロール部分の記述 -->
+<script>
+$(function(){
+   // #で始まるアンカーをクリックした場合に処理
+   $('a[href^=#]').click(function() {
+      // スクロールの速度
+      var speed = 1000; // ミリ秒
+      // アンカーの値取得
+      var href= $(this).attr("href");
+      // 移動先を取得
+      var target = $(href == "#" || href == "" ? 'html' : href);
+      // 移動先を数値で取得
+      var position = target.offset().top;
+      // スムーススクロール
+      $('body,html').animate({scrollTop:position}, speed, 'swing');
+      return false;
+   });
+});
+</script>
+</head>
+<body>
+<!-- ヘッダー　デザイン検討 -->
+<div class="navbar navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="nabar-header">
+			<div class="row">
+				<div class="col-sm-3 col-xs-6"><button class="btn btn-raised btn-primary btn-block" onclick="moveTop();"><i class="fa fa-lock  fa-2x" aria-hidden="true"></i>  寺子屋トップ</button></div>
+				<div class="col-sm-3 col-xs-6"><button class="btn btn-raised btn-primary btn-block" onclick="moveMember()"><i class="fa fa-users fa-2x" aria-hidden="true"></i>  メンバー情報</button></div>
+				<div class="col-sm-3 col-xs-6"><button class="btn btn-raised btn-primary btn-block" onclick="moveMypage()"><i class="fa fa-id-card-o  fa-2x" aria-hidden="true"></i>  マイページ</button></div>
+				<div class="col-sm-3 col-xs-6"><button class="btn btn-raised btn-primary btn-block" onclick="logout()"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>  ログアウト</button></div>
+			</div>
+		</div>
+	</div>
+</div>
+sorry...
+</body>
+</html>
